@@ -72,7 +72,6 @@ def preprocess(path, path_save, version, raw_sr=50, target_sr=20, seq_len=20):
     return data, labels
 
 
-# activity, user
 path_save = r'blind_user'
 version = r'20_120'
 DATASET_PATH = r'/Users/prerna/Documents/gesture modeling/user_study/'

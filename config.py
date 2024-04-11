@@ -151,8 +151,11 @@ def load_model_config(target, prefix, version
         if "pretrain" in target:
             model_config_all = json.load(open(path_bert, "r"))
         else:
+            #print(path_classifier)
             model_config_all = json.load(open(path_classifier, "r"))
+            #print(model_config_all)
         name = prefix + "_" + version
+        #print(name)
         if name in model_config_all:
             if "pretrain" in target:
                 return PretrainModelConfig.from_json(model_config_all[name])
