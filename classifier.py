@@ -28,6 +28,7 @@ from utils import get_device, handle_argv \
 
 def classify_embeddings(args, data, labels, label_index, training_rate, label_rate, balance=False, method=None):
     train_cfg, model_cfg, dataset_cfg = load_classifier_config(args)
+    print(train_cfg, model_cfg, dataset_cfg)
     label_names, label_num = load_dataset_label_names(dataset_cfg, label_index)
     data_train, label_train, data_vali, label_vali, data_test, label_test \
         = prepare_classifier_dataset(data, labels, label_index=label_index, training_rate=training_rate
@@ -68,17 +69,20 @@ def classify_embeddings(args, data, labels, label_index, training_rate, label_ra
 if __name__ == "__main__":
 
     training_rate = 0.8 # unlabeled sample / total sample
-    label_rate = 0.01 # labeled sample / unlabeled sample
+    label_rate = 0.9 # labeled sample / unlabeled sample
     balance = True
 
     mode = "base"
     method = "gru"
     args = handle_argv('classifier_' + mode + "_" + method, 'train.json', method)
     embedding, labels = load_embedding_label(args.model_file, args.dataset, args.dataset_version)
-    label_test, label_estimate_test = classify_embeddings(args, embedding, labels, args.label_index,
-                                                          training_rate, label_rate, balance=balance, method=method)
+    #print(embedding.shape, labels.shape)
+    label_test, label_estimate_test = classify_embeddings(args, embedding, labels, args.label_index,training_rate, label_rate, balance=balance, method=method)
+
+    #print("label_test", label_test)
 
     label_names, label_num = load_dataset_label_names(args.dataset_cfg, args.label_index)
+    print(label_names, label_num)
     acc, matrix, f1 = stat_results(label_test, label_estimate_test)
     matrix_norm = plot_matrix(matrix, label_names)
 
